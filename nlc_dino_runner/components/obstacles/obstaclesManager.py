@@ -18,11 +18,14 @@ class ObstaclesManager():
             # Rect1.colliderect(Rect2)
             if game.player.dino_rect.colliderect(obstacle.rect):
                 game.playing = False
-                pygame.time.delay(2000)
+                pygame.time.delay(500)
+                game.death_count += 1
                 break
 
     def draw(self, screen):
         for obstacle in self.obstacles_list:
             obstacle.draw(screen)
 
+    def reset_obstacles(self):
+        self.obstacles_list.clear()
 # Clase 4 - Colisiones

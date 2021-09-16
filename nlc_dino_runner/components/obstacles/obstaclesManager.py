@@ -17,6 +17,9 @@ class ObstaclesManager():
             obstacle.update(game.game_speed, self.obstacles_list)
             # Rect1.colliderect(Rect2)
             if game.player.dino_rect.colliderect(obstacle.rect):
+                if game.player.shield:
+                    self.obstacles_list.remove(obstacle)
+                    continue
                 game.playing = False
                 pygame.time.delay(500)
                 game.death_count += 1

@@ -4,7 +4,7 @@ from nlc_dino_runner.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 FONT_STYLE = "freesansbold.ttf"
 BLACK_COLOR = (0,0,0)
-def ger_score_element(points):
+def get_score_element(points):
     font = pygame.font.Font("freesansbold.ttf", 30)
     text = font.render("Points: " + str(points), True, BLACK_COLOR)
     text_rect = text.get_rect()

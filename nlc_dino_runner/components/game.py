@@ -21,9 +21,11 @@ class Game:
         self.points = 0
         self.running = True
         self.death_count = 0
+        self.high_score = 0
 
     def run(self):
         self.obstacles_manager.reset_obstacles()
+        self.high_score = max(self.high_score, self.points)
         self.points = 0
         self.playing = True
         while self.playing:
@@ -57,8 +59,11 @@ class Game:
         self.points += 1
         if self.points % 100 == 0:
             self.game_speed += 1
-        score_element, score_element_rect = text_utils.ger_score_element(self.points)
+        score_element, score_element_rect = text_utils.get_score_element(self.points)
         self.screen.blit(score_element, score_element_rect)
+
+        high_score, high_score_rect = text_utils.get_centered_message("High Score: " + str(self.high_score),width=150, height=50)
+        self.screen.blit(high_score, high_score_rect)
 
     def draw_background(self):
         image_width = BG.get_width()
@@ -96,11 +101,19 @@ class Game:
 
     def print_menu_elements(self):
         half_screen_height = SCREEN_HEIGHT // 2
-        text, text_rect = text_utils.get_centered_message("Press any Key to Restart")
+        message = "Press any key to "
+        if self.death_count == 0:
+            message += "Start"
+        else:
+            message += "Restart"
+        text, text_rect = text_utils.get_centered_message(message)
         self.screen.blit(text, text_rect)
 
         death_score, death_score_rect = text_utils.get_centered_message("Death count: " + str(self.death_count), height=half_screen_height + 50)
         self.screen.blit(death_score, death_score_rect)
+
+        previous_score, previous_score_rect = text_utils.get_centered_message("Your Score: " + str(self.points), height=half_screen_height + 90)
+        self.screen.blit(previous_score, previous_score_rect)
 
         self.screen.blit(ICON, ((SCREEN_WIDTH // 2) - 40, half_screen_height - 150))
 # Clase 2: Ventana, Background

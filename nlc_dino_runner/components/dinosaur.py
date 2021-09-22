@@ -95,7 +95,7 @@ class Dinosaur(Sprite):
 
     def check_invincibility(self, screen):
         if self.shield:
-            time_to_show = round((self.shield_time_up/1000) - (pygame.time.get_ticks()/1000), 2) # round(x, d) redondea el float "x" a "d" decimales
+            time_to_show = round((self.shield_time_up - pygame.time.get_ticks())/1000, 2) # round(x, d) redondea el float "x" a "d" decimales
             if time_to_show < 0:
                 self.shield = False
                 if self.type == SHIELD_TYPE:

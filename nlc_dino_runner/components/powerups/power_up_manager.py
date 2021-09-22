@@ -34,7 +34,7 @@ class PowerUpManager:
                 player.shield = True
                 player.show_text = True
                 player.type = power_up.type
-                power_up.start_time = pygame.time.get_ticks() #     miliseconds
+                power_up.start_time = pygame.time.get_ticks() # miliseconds
                 time_random = random.randrange(5, 8) # random.randrange(start, stop) = choice(range(start, stop)) = randint(5, 7)
                 player.shield_time_up = power_up.start_time + (time_random * 1000)
                 self.power_ups.remove(power_up)

@@ -3,6 +3,7 @@ import pygame
 from nlc_dino_runner.components import text_utils
 from nlc_dino_runner.components.dinosaur import Dinosaur
 from nlc_dino_runner.components.obstacles.obstaclesManager import ObstaclesManager
+from nlc_dino_runner.components.player_hearts.hearts_manager import HeartsManager
 from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
 from nlc_dino_runner.utils.constants import TITTLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, SMALL_CACTUS, LARGE_CACTUS
 
@@ -20,6 +21,7 @@ class Game:
         self.player = Dinosaur()
         self.obstacles_manager = ObstaclesManager()
         self.power_up_manager = PowerUpManager()
+        self.hearts_manager = HeartsManager()
         self.points = 0
         self.running = True
         self.death_count = 0
@@ -28,6 +30,7 @@ class Game:
     def run(self):
         self.obstacles_manager.reset_obstacles()
         self.power_up_manager.reset_power_ups(self.points)
+        self.hearts_manager.reset_counter_hearts()
         self.high_score = max(self.high_score, self.points)
         self.points = 0
         self.playing = True
@@ -56,6 +59,8 @@ class Game:
         self.obstacles_manager.draw(self.screen)
         self.power_up_manager.draw(self.screen)
         self.score()
+        self.hearts_manager.draw(self.screen)
+
         pygame.display.update()
         pygame.display.flip()
 
@@ -67,8 +72,8 @@ class Game:
         self.screen.blit(score_element, score_element_rect)
         self.player.check_invincibility(self.screen)
 
-        high_score, high_score_rect = text_utils.get_centered_message("High Score: " + str(self.high_score),width=150, height=50)
-        self.screen.blit(high_score, high_score_rect)
+        # high_score, high_score_rect = text_utils.get_centered_message("High Score: " + str(self.high_score),width=150, height=50)
+        # self.screen.blit(high_score, high_score_rect)
 
     def draw_background(self):
         image_width = BG.get_width()

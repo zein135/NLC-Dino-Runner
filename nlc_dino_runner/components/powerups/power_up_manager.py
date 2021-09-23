@@ -43,6 +43,7 @@ class PowerUpManager:
                 if power_up.type == HAMMER_TYPE:
                     player.hammer = True
                     player.type = power_up.type
+                    player.hammers_remain = 3
 
                 self.power_ups.remove(power_up)
 

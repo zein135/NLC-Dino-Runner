@@ -50,6 +50,7 @@ class Dinosaur(Sprite):
 
         self.hammer = False
         self.throwing_hammer = False
+        self.hammers_remain = 3
 
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -85,13 +86,10 @@ class Dinosaur(Sprite):
         if self.step_index >= 10:
             self.step_index = 0
 
-        if user_input[pygame.K_SPACE] and self.hammer:
+        if user_input[pygame.K_SPACE] and self.hammer and not self.throwing_hammer:
             print("Lanzando martillo")
-            self.hammer_thowed = HammerThowed()
+            self.hammer_throwed = HammerThowed(self.dino_rect.y)
             self.throwing_hammer = True
-
-        if self.throwing_hammer:
-            self.throw_hammer(screen)
 
     def duck(self):
         self.image = self.duck_img[self.type][self.step_index // 5]
@@ -134,9 +132,6 @@ class Dinosaur(Sprite):
     def check_hammer(self, user_input):
         pass
 
-    def throw_hammer(self, screen):
-        self.hammer_thowed.draw_hammer(screen)
-        self.hammer_thowed.update_hammer(self)
 
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x,self.dino_rect.y))

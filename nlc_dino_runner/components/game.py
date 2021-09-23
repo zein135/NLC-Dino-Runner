@@ -50,6 +50,8 @@ class Game:
         self.player.update(user_input, self.screen)
         self.obstacles_manager.update(self)
         self.power_up_manager.update(self.points, self.game_speed, self.player)
+        if self.player.throwing_hammer:
+            self.player.hammer_throwed.update_hammer(self.player)
 
     def draw(self):
         self.clock.tick(FPS)
@@ -60,6 +62,8 @@ class Game:
         self.power_up_manager.draw(self.screen)
         self.score()
         self.hearts_manager.draw(self.screen)
+        if self.player.throwing_hammer:
+            self.player.hammer_throwed.draw_hammer(self.screen)
 
         pygame.display.update()
         pygame.display.flip()

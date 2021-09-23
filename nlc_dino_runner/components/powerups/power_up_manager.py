@@ -3,7 +3,7 @@ import pygame
 
 from nlc_dino_runner.components.powerups.shield import Shield
 from nlc_dino_runner.components.powerups.hammer import Hammer
-from nlc_dino_runner.utils.constants import SHIELD_TYPE, HAMMER_TYPE
+from nlc_dino_runner.utils.constants import SHIELD_TYPE, HAMMER_TYPE, DEFAULT_TYPE
 
 
 class PowerUpManager:
@@ -14,10 +14,12 @@ class PowerUpManager:
         self.points = 0
         self.option_numbers = list(range(1, 10)) # crea una lista con los numeros [1,2,3,4,5,6,7,8,9]
 
-    def reset_power_ups(self, points):
+    def reset_power_ups(self, points, player):
         self.power_ups = []
         self.points = points
         self.when_appears = random.randint(200, 300) + self.points
+        player.type = DEFAULT_TYPE
+        player.hammer = False
 
     def generate_power_ups(self, points):
         self.points = points
@@ -42,6 +44,7 @@ class PowerUpManager:
                     player.shield_time_up = power_up.start_time + (time_random * 1000)
                 if power_up.type == HAMMER_TYPE:
                     player.hammer = True
+                    player.show_text = True
                     player.type = power_up.type
 
                 self.power_ups.remove(power_up)

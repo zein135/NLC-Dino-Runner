@@ -10,20 +10,16 @@ class Hammer(PowerUp):
         self.type = HAMMER_TYPE
         super().__init__(self.image, self.type)
 
-class HammerThowed():
+    def set_pos_hammer(self, dino_rect):
+        self.rect.x = dino_rect.x
+        self.rect.y = dino_rect.y
 
-    def __init__(self):
-        self.image = HAMMER
-        self.rect = self.image.get_rect()
-        self.rect.y = 310
-        self.rect.x = 20
-
-    def update_hammer(self, player, game_speed=21):
+    def update_hammer(self, player):
         print("Moviendo")
-        self.rect.x += game_speed
+        self.rect.x += 30
         if self.rect.x > SCREEN_WIDTH:
-            player.hammer = False
             player.throwing_hammer = False
 
     def draw_hammer(self, screen):
         screen.blit(self.image, self.rect)
+

@@ -1,7 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
-from nlc_dino_runner.components.powerups.hammer import Hammer, HammerThowed
+from nlc_dino_runner.components.powerups.hammer import Hammer
 from nlc_dino_runner.utils.constants import (
     RUNNING,
     DUCKING,
@@ -50,6 +50,7 @@ class Dinosaur(Sprite):
 
         self.hammer = False
         self.throwing_hammer = False
+        self.hammers_remain = 0
 
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -87,8 +88,10 @@ class Dinosaur(Sprite):
 
         if user_input[pygame.K_SPACE] and self.hammer:
             print("Lanzando martillo")
-            self.hammer_thowed = HammerThowed()
+            self.hammer_throwed = Hammer()
+            self.hammer_throwed.set_pos_hammer(self.dino_rect)
             self.throwing_hammer = True
+            self.hammers_remain -= 1
 
         if self.throwing_hammer:
             self.throw_hammer(screen)
@@ -131,8 +134,21 @@ class Dinosaur(Sprite):
                     )
                     screen.blit(text, text_rect)
 
-    def check_hammer(self, user_input):
-        pass
+    def check_hammer(self, screen):
+        if self.hammer:
+            if self.hammers_remain <= 0:
+                self.hammer = False
+                if self.type == HAMMER_TYPE:
+                    self.type = DEFAULT_TYPE
+            else:
+                if self.show_text:
+                    text, text_rect = get_centered_message(
+                        f'Hammers remain: {self.hammers_remain}',
+                        width=500,
+                        height=40,
+                        size=20
+                    )
+                    screen.blit(text, text_rect)
 
     def throw_hammer(self, screen):
         self.hammer_thowed.draw_hammer(screen)

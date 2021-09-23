@@ -17,22 +17,25 @@ class ObstaclesManager():
 
         for obstacle in self.obstacles_list:
             obstacle.update(game.game_speed, self.obstacles_list)
+            if game.player.throwing_hammer:
+                if game.player.hammer_throwed.rect.colliderect(obstacle.rect):
+                    self.obstacles_list.remove(obstacle)
+                    continue
+
             # Rect1.colliderect(Rect2)
             if game.player.dino_rect.colliderect(obstacle.rect):
-                if game.player.hammer and not game.player.shield and user_input[pygame.K_SPACE]:
+                if game.player.shield:
                     self.obstacles_list.remove(obstacle)
                 else:
-                    if game.player.shield:
+                    game.hearts_manager.hearts_counter -= 1
+                    if game.hearts_manager.hearts_counter > 0:
                         self.obstacles_list.remove(obstacle)
                     else:
-                        game.hearts_manager.hearts_counter -= 1
-                        if game.hearts_manager.hearts_counter > 0:
-                            self.obstacles_list.remove(obstacle)
-                        else:
-                            game.playing = False
-                            pygame.time.delay(500)
-                            game.death_count += 1
-                            break
+                        game.playing = False
+                        pygame.time.delay(500)
+                        game.death_count += 1
+                        game.game_speed = 20
+                        break
 
     def draw(self, screen):
         for obstacle in self.obstacles_list:

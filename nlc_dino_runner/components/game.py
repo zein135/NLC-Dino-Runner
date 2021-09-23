@@ -5,7 +5,8 @@ from nlc_dino_runner.components.dinosaur import Dinosaur
 from nlc_dino_runner.components.obstacles.obstaclesManager import ObstaclesManager
 from nlc_dino_runner.components.player_hearts.hearts_manager import HeartsManager
 from nlc_dino_runner.components.powerups.power_up_manager import PowerUpManager
-from nlc_dino_runner.utils.constants import TITTLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, SMALL_CACTUS, LARGE_CACTUS
+from nlc_dino_runner.utils.constants import TITTLE, ICON, SCREEN_WIDTH, SCREEN_HEIGHT, BG, FPS, SMALL_CACTUS, LARGE_CACTUS, DEFAULT_TYPE
+
 
 class Game:
     def __init__(self):
@@ -29,11 +30,12 @@ class Game:
 
     def run(self):
         self.obstacles_manager.reset_obstacles()
-        self.power_up_manager.reset_power_ups(self.points)
+        self.power_up_manager.reset_power_ups(self.points, self.player)
         self.hearts_manager.reset_counter_hearts()
         self.high_score = max(self.high_score, self.points)
         self.points = 0
         self.playing = True
+
         while self.playing:
             self.event()
             self.update()
@@ -71,6 +73,7 @@ class Game:
         score_element, score_element_rect = text_utils.get_score_element(self.points)
         self.screen.blit(score_element, score_element_rect)
         self.player.check_invincibility(self.screen)
+        self.player.check_hammer(self.screen)
 
         # high_score, high_score_rect = text_utils.get_centered_message("High Score: " + str(self.high_score),width=150, height=50)
         # self.screen.blit(high_score, high_score_rect)

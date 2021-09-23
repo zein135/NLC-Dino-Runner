@@ -133,6 +133,7 @@ class Game:
         self.screen.blit(previous_score, previous_score_rect)
 
         self.screen.blit(ICON, ((SCREEN_WIDTH // 2) - 40, half_screen_height - 150))
+
 # Clase 2: Ventana, Background
 
 # Clase 5 - Creacion del score y menu

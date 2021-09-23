@@ -11,7 +11,6 @@ class ObstaclesManager():
         self.obstacles_list = []
 
     def update(self, game):
-        user_input = pygame.key.get_pressed()
         if len(self.obstacles_list) == 0:
             self.obstacles_list.append(Cactus(SMALL_CACTUS))
 
@@ -44,3 +43,4 @@ class ObstaclesManager():
     def reset_obstacles(self):
         self.obstacles_list.clear()
 # Clase 4 - Colisiones
+

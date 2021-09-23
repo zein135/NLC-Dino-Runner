@@ -92,9 +92,6 @@ class Dinosaur(Sprite):
             self.throwing_hammer = True
             self.hammers_remain -= 1
 
-        if self.throwing_hammer:
-            self.throw_hammer(screen)
-
     def duck(self):
         self.image = self.duck_img[self.type][self.step_index // 5]
         self.dino_rect = self.image.get_rect()
@@ -149,12 +146,10 @@ class Dinosaur(Sprite):
                     )
                     screen.blit(text, text_rect)
 
-    def throw_hammer(self, screen):
-        self.hammer_throwed.draw_hammer(screen)
-
 
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x,self.dino_rect.y))
+
 
 # Clase 3: Dino
 

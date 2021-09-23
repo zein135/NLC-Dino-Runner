@@ -22,3 +22,4 @@ class Hammer(PowerUp):
     def draw_hammer(self, screen):
         screen.blit(self.image, self.rect)
 
+

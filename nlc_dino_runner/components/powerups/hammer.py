@@ -15,8 +15,7 @@ class Hammer(PowerUp):
         self.rect.y = dino_rect.y
 
     def update_hammer(self, player):
-        print("Moviendo")
-        self.rect.x += 30
+        self.rect.x += 20
         if self.rect.x > SCREEN_WIDTH:
             player.throwing_hammer = False
 

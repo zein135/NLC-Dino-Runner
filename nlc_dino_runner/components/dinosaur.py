@@ -1,5 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
+
+from nlc_dino_runner.components.powerups.hammer import Hammer, HammerThowed
 from nlc_dino_runner.utils.constants import (
     RUNNING,
     DUCKING,
@@ -7,10 +9,15 @@ from nlc_dino_runner.utils.constants import (
     RUNNING_SHIELD,
     DUCKING_SHIELD,
     JUMPING_SHIELD,
+    RUNNING_HAMMER,
+    DUCKING_HAMMER,
+    JUMPING_HAMMER,
     DEFAULT_TYPE,
-    SHIELD_TYPE
+    SHIELD_TYPE,
+    HAMMER_TYPE
 )
 from nlc_dino_runner.components.text_utils import get_centered_message
+
 
 class Dinosaur(Sprite):
     X_POS = 80
@@ -21,15 +28,18 @@ class Dinosaur(Sprite):
     def __init__(self):
         self.run_img = {
             DEFAULT_TYPE: RUNNING,
-            SHIELD_TYPE: RUNNING_SHIELD
+            SHIELD_TYPE: RUNNING_SHIELD,
+            HAMMER_TYPE: RUNNING_HAMMER
         }
         self.jump_img = {
             DEFAULT_TYPE: JUMPING,
-            SHIELD_TYPE: JUMPING_SHIELD
+            SHIELD_TYPE: JUMPING_SHIELD,
+            HAMMER_TYPE: JUMPING_HAMMER
         }
         self.duck_img = {
             DEFAULT_TYPE: DUCKING,
-            SHIELD_TYPE: DUCKING_SHIELD
+            SHIELD_TYPE: DUCKING_SHIELD,
+            HAMMER_TYPE: DUCKING_HAMMER
         }
         self.type = DEFAULT_TYPE
         self.image = self.run_img[self.type][0]
@@ -37,6 +47,9 @@ class Dinosaur(Sprite):
         self.shield = False
         self.shield_time_up = 0
         self.show_text = False
+
+        self.hammer = False
+        self.throwing_hammer = False
 
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -47,7 +60,7 @@ class Dinosaur(Sprite):
         self.dino_jump = False
         self.jump_vel = self.JUMP_VEL
 
-    def update(self, user_input):
+    def update(self, user_input, screen):
         if self.dino_jump:
             self.jump()
         if self.dino_duck:
@@ -58,7 +71,7 @@ class Dinosaur(Sprite):
             self.dino_duck = True
             self.dino_jump = False
             self.dino_run = False
-        elif (user_input[pygame.K_UP] or user_input[pygame.K_w] or user_input[pygame.K_SPACE]) and not self.dino_jump:
+        elif (user_input[pygame.K_UP] or user_input[pygame.K_w]) and not self.dino_jump:
             self.dino_jump = True
             self.dino_run = False
             self.dino_duck = False
@@ -71,6 +84,14 @@ class Dinosaur(Sprite):
 
         if self.step_index >= 10:
             self.step_index = 0
+
+        if user_input[pygame.K_SPACE] and self.hammer:
+            print("Lanzando martillo")
+            self.hammer_thowed = HammerThowed()
+            self.throwing_hammer = True
+
+        if self.throwing_hammer:
+            self.throw_hammer(screen)
 
     def duck(self):
         self.image = self.duck_img[self.type][self.step_index // 5]
@@ -109,6 +130,13 @@ class Dinosaur(Sprite):
                         size=20
                     )
                     screen.blit(text, text_rect)
+
+    def check_hammer(self, user_input):
+        pass
+
+    def throw_hammer(self, screen):
+        self.hammer_thowed.draw_hammer(screen)
+        self.hammer_thowed.update_hammer(self)
 
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x,self.dino_rect.y))

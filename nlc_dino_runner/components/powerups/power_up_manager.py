@@ -2,6 +2,8 @@ import random
 import pygame
 
 from nlc_dino_runner.components.powerups.shield import Shield
+from nlc_dino_runner.components.powerups.hammer import Hammer
+from nlc_dino_runner.utils.constants import SHIELD_TYPE, HAMMER_TYPE
 
 
 class PowerUpManager:
@@ -23,7 +25,7 @@ class PowerUpManager:
             if self.when_appears == self.points:
                 print("generating powerup")
                 self.when_appears = random.randint(self.when_appears + 200, 500 + self.when_appears)
-                self.power_ups.append(Shield())
+                self.power_ups.append(random.choice([Shield(), Hammer()]))
         return self.power_ups
 
     def update(self, points, game_speed, player):
@@ -31,13 +33,19 @@ class PowerUpManager:
         for power_up in self.power_ups:
             power_up.update(game_speed, self.power_ups)
             if player.dino_rect.colliderect(power_up.rect):
-                player.shield = True
-                player.show_text = True
-                player.type = power_up.type
-                power_up.start_time = pygame.time.get_ticks() # miliseconds
-                time_random = random.randrange(5, 8) # random.randrange(start, stop) = choice(range(start, stop)) = randint(5, 7)
-                player.shield_time_up = power_up.start_time + (time_random * 1000)
+                if power_up.type == SHIELD_TYPE:
+                    player.shield = True
+                    player.show_text = True
+                    player.type = power_up.type
+                    power_up.start_time = pygame.time.get_ticks() # miliseconds
+                    time_random = random.randrange(5, 8) # random.randrange(start, stop) = choice(range(start, stop)) = randint(5, 7)
+                    player.shield_time_up = power_up.start_time + (time_random * 1000)
+                if power_up.type == HAMMER_TYPE:
+                    player.hammer = True
+                    player.type = power_up.type
+
                 self.power_ups.remove(power_up)
+
 
     def draw(self, screen):
         for power_up in self.power_ups:

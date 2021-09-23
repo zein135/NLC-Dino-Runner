@@ -72,3 +72,4 @@ HEART_COUNTER = 8
 
 DEFAULT_TYPE = "default"
 SHIELD_TYPE = "shield"
+HAMMER_TYPE = "hammer"

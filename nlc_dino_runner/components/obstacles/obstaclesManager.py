@@ -1,4 +1,5 @@
 import pygame.time
+import pygame
 
 from nlc_dino_runner.components.obstacles.cactus import Cactus
 from nlc_dino_runner.utils.constants import SMALL_CACTUS
@@ -10,6 +11,7 @@ class ObstaclesManager():
         self.obstacles_list = []
 
     def update(self, game):
+        user_input = pygame.key.get_pressed()
         if len(self.obstacles_list) == 0:
             self.obstacles_list.append(Cactus(SMALL_CACTUS))
 
@@ -17,17 +19,20 @@ class ObstaclesManager():
             obstacle.update(game.game_speed, self.obstacles_list)
             # Rect1.colliderect(Rect2)
             if game.player.dino_rect.colliderect(obstacle.rect):
-                if game.player.shield:
+                if game.player.hammer and not game.player.shield and user_input[pygame.K_SPACE]:
                     self.obstacles_list.remove(obstacle)
                 else:
-                    game.hearts_manager.hearts_counter -= 1
-                    if game.hearts_manager.hearts_counter > 0:
+                    if game.player.shield:
                         self.obstacles_list.remove(obstacle)
                     else:
-                        game.playing = False
-                        pygame.time.delay(500)
-                        game.death_count += 1
-                        break
+                        game.hearts_manager.hearts_counter -= 1
+                        if game.hearts_manager.hearts_counter > 0:
+                            self.obstacles_list.remove(obstacle)
+                        else:
+                            game.playing = False
+                            pygame.time.delay(500)
+                            game.death_count += 1
+                            break
 
     def draw(self, screen):
         for obstacle in self.obstacles_list:

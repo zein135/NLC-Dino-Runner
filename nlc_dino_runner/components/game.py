@@ -79,8 +79,6 @@ class Game:
         self.player.check_invincibility(self.screen)
         self.player.check_hammer(self.screen)
 
-        # high_score, high_score_rect = text_utils.get_centered_message("High Score: " + str(self.high_score),width=150, height=50)
-        # self.screen.blit(high_score, high_score_rect)
 
     def draw_background(self):
         image_width = BG.get_width()
@@ -131,6 +129,10 @@ class Game:
 
         previous_score, previous_score_rect = text_utils.get_centered_message("Your Score: " + str(self.points), height=half_screen_height + 90)
         self.screen.blit(previous_score, previous_score_rect)
+
+        self.high_score = max(self.points, self.high_score)
+        high_score, high_score_rect = text_utils.get_centered_message("High Score: " + str(self.high_score), height=half_screen_height + 130)
+        self.screen.blit(high_score, high_score_rect)
 
         self.screen.blit(ICON, ((SCREEN_WIDTH // 2) - 40, half_screen_height - 150))
 
